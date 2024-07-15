@@ -6,7 +6,7 @@
 /*   By: josorteg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 10:15:08 by josorteg          #+#    #+#             */
-/*   Updated: 2024/07/15 11:01:23 by josorteg         ###   ########.fr       */
+/*   Updated: 2024/07/15 15:16:28 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 	-char
 		-1 caracter solo.
 		->32 <126 "imprimible"
-		- que no sea un digito (seria integer)
+		- que no sea un digito (seria integer) (48-57 en ascii incluidos
 	-int
 		-longitud mayor que 0.
 		-checkear signo y que el resto sean digitos.
@@ -30,4 +30,29 @@
 	-Keyboard (infs,nans)
 		-checkear cadena*/
 
+bool	checkChar(const std::string val)
+{
+	std::string ch = value[0];
+	if ((value.leng() != 1) || (ch < 32) || ch > 126 ) || ( ch >= 48 && ch <= 57)
+		return(false);
+	return (true);
+}
 
+bool	checkInt(const std::string val)
+void	ScalarConverter::convert (std::string value)
+{
+	if (value.empty())
+		//error
+	if(checkChar(value))
+		//charToALL
+	if(checkInt(value))
+		//intToAll
+	if(checkFloat(value))
+		//floatToAll
+	if(checkDouble(value))
+		//doubleToAll
+	if(checkLiteral(value))
+		//literalToAll
+	else
+		//error
+}

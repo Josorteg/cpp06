@@ -6,7 +6,7 @@
 /*   By: josorteg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 10:15:18 by josorteg          #+#    #+#             */
-/*   Updated: 2024/07/12 11:12:23 by josorteg         ###   ########.fr       */
+/*   Updated: 2024/07/15 15:16:39 by josorteg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,12 @@
 
 class ScalarConverter
 {
-	public:
-
 	private:
+		static bool checkChar(const std::string val);
+		static bool checkInt(const std::string val);
+		
+
+	public:
 		
 		~ScalarConverter(void);
 		static void convert(std::string value);
