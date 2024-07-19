@@ -16,9 +16,9 @@ int main (int val,char **values)
 {
 	if (val != 2)
 	{
-		std::cerr<<"One and only one parameter in the function!!"<<std::endl;
+		std::cout<<"One and only one parameter in the function!!"<<std::endl;
 		return (1);
 	}
-	Converter::convert(values[1]);
+	ScalarConverter::convert(values[1]);
 	return (0);
 }

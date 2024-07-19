@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+
+#include"Converter.hpp"
 /*2 checkear que tipo es
 	-char
 		-1 caracter solo.
@@ -30,17 +32,17 @@
 	-Keyboard (infs,nans)
 		-checkear cadena*/
 
-bool	checkChar(const std::string val)
+bool	ScalarConverter::checkChar(std::string val)
 {
-	std::string ch = value[0];
-	if ((value.leng() != 1) || (ch < 32) || ch > 126 ) || ( ch >= 48 && ch <= 57)
+	char ch = val[0];
+	if ((val.length() != 1) || ((ch < 32) || (ch > 126 )) || ( ch >= 48 && ch <= 57))
 		return(false);
 	return (true);
 }
 
-bool	checkInt(const std::string val)
+bool	ScalarConverter::checkInt(std::string val)
 {
-	if(val.leng() < 1)
+	if(val.length() < 1)
 		return(false);
 	for (size_t i = (0 + (val[0] == '-') + (val[0] == '+')); val[i];
 			i++)
@@ -52,24 +54,85 @@ bool	checkInt(const std::string val)
 	
 }
 
-bool	checkFloat(const std::string val)
+bool	ScalarConverter::checkFloat(std::string val)
+{	
+	int dot = 0;
+	for (size_t i = (0 + (val[0] == '-') + (val[0] == '+'));
+			val[i] && (val[i] != 'f'); i++)
+	{
+		if (!std::isdigit(val.c_str()[i]) and val[i] != '.')
+			return (false);
+		else if (val[i] == '.')
+		{
+			if (dot > 0)
+				return (false);
+			dot++;
+		}
+	}
+	if (val[val.length() - 1] != 'f')
+			return (false);
+	return (true);
+}
+
+bool ScalarConverter::checkDouble(const std::string val)
 {
-	
+	int dot = 0;
+	for (size_t i = (0 + (val[0] == '-') + (val[0] == '+'));
+			val[i]; i++)
+	{
+		if (!std::isdigit(val.c_str()[i]) and val[i] != '.')
+			return (false);
+		else if (val[i] == '.')
+		{
+			if (dot > 0)
+				return (false);
+			dot++;
+		}
+	}
+	return (true);
+}
+
+bool ScalarConverter::checkLiteral(const std::string val)
+{
+	std::string words[6] = {"-inff", "+inff", "nanf", "-inf", "+inf", "nan"};
+	for (size_t i = 0; i < 6; i++)
+	{
+		if (words[i] == val)
+			return (true);
+	}	   
+	return (false);
 }
 void	ScalarConverter::convert (std::string value)
 {
-	if (value.empty())
-		//error
-	if(checkChar(value))
-		//charToALL
-	if(checkInt(value))
-		//intToAll
-	if(checkFloat(value))
-		//floatToAll
-	if(checkDouble(value))
-		//doubleToAll
-	if(checkLiteral(value))
-		//literalToAll
+	bool		( *checkType[ 5 ] )( const std::string ) = { \
+										ScalarConverter::checkChar, \
+										ScalarConverter::checkInt, \
+										ScalarConverter::checkFloat, \
+										ScalarConverter::checkDouble, \
+										ScalarConverter::checkLiteral };
+	std::string (type[5]) = {"Char","Int","Float","Double","Literal"};
+	
+	for (int i = 0; i < 5 ; i++)
+	{
+		if (checkType[i](value) == true)
+		{
+			std::cout<<"hemos parado en :"<<type[i]<<std::endl;
+			break;
+		}
+	}
+	/*if (value.empty())
+
+		std::cout<<"empty"<<std::endl;
+	if(ScalarConverter::checkChar(value))
+		std::cout<<"CHAR"<<std::endl;
+	if(ScalarConverter::checkInt(value))
+		std::cout<<"INT"<<std::endl;
+	if(ScalarConverter::checkFloat(value))
+		std::cout<<"FLOAT"<<std::endl;
+	if(ScalarConverter::checkDouble(value))
+		std::cout<<"DOUBLE"<<std::endl;
+	if(ScalarConverter::checkLiteral(value))
+		std::cout<<"LITERAL"<<std::endl;
 	else
-		//error
+		std::cout<<"ERROR"<<std::endl;*/
 }

@@ -13,12 +13,18 @@
 #ifndef __SCALARCONVERTER__HPP
 # define __SCALARCONVERTER__HPP
 
+#include<string>
+#include<iostream>
+#include<cstdlib>
+
 class ScalarConverter
 {
 	private:
 		static bool checkChar(const std::string val);
 		static bool checkInt(const std::string val);
 		static bool checkFloat(const std::string val);
+		static bool checkDouble(const std::string val);
+		static bool checkLiteral(const std::string val);
 		
 
 	public:
