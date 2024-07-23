@@ -16,6 +16,8 @@
 #include<string>
 #include<iostream>
 #include<cstdlib>
+#include <limits>  
+#include <cstdlib> 
 
 class ScalarConverter
 {
@@ -26,6 +28,11 @@ class ScalarConverter
 		static bool checkDouble(const std::string val);
 		static bool checkLiteral(const std::string val);
 		
+		static void changeChar(const std::string val);
+		static void changeInt(const std::string val);
+		static void changeFloat(const std::string val);
+		static void changeDouble(const std::string val);
+		static void changeLiteral(const std::string val);
 
 	public:
 		
