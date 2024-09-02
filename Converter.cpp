@@ -50,6 +50,12 @@ bool	ScalarConverter::checkInt(std::string val)
 		if (!std::isdigit(val.c_str()[i]))
 			return (false);
 	}
+	char* end;
+	long valInt = strtod(val.c_str(), &end);
+	if (valInt > std::numeric_limits<int>::max() || -valInt < std::numeric_limits<int>::min())
+	{
+		return(false);
+	}
 	return(true);
 	
 }
@@ -57,6 +63,7 @@ bool	ScalarConverter::checkInt(std::string val)
 bool	ScalarConverter::checkFloat(std::string val)
 {	
 	int dot = 0;
+	char* end;
 	for (size_t i = (0 + (val[0] == '-') + (val[0] == '+'));
 			val[i] && (val[i] != 'f'); i++)
 	{
@@ -71,16 +78,22 @@ bool	ScalarConverter::checkFloat(std::string val)
 	}
 	if (val[val.length() - 1] != 'f' || dot != 1)
 			return (false);
+	float valDouble = strtod(val.c_str(), &end);
+	if (valDouble == std::numeric_limits<float>::infinity() || valDouble == -std::numeric_limits<float>::infinity()) 
+    {
+		return(false);
+	}
 	return (true);
 }
 
 bool ScalarConverter::checkDouble(const std::string val)
 {
 	int dot = 0;
+	char* end;
 	for (size_t i = (0 + (val[0] == '-') + (val[0] == '+'));
 			val[i]; i++)
 	{
-		if (!std::isdigit(val.c_str()[i]) and val[i] != '.')
+		if (!std::isdigit(val.c_str()[i]) and val[i] != '.' &&(val[i] != 'f'))
 			return (false);
 		else if (val[i] == '.')
 		{
@@ -88,6 +101,14 @@ bool ScalarConverter::checkDouble(const std::string val)
 				return (false);
 			dot++;
 		}
+	}
+	long double valDouble = strtod(val.c_str(), &end);
+	//std::cout<<valDouble<<std::endl;
+	//std::cout<<std::numeric_limits<double>::infinity()<<std::endl;
+	if (valDouble == std::numeric_limits<double>::infinity() || valDouble == -std::numeric_limits<double>::infinity())
+	{
+		std::cout<<"Out of Range Double"<<std::endl;
+		exit(0);
 	}
 	return (true);
 }
@@ -105,65 +126,106 @@ bool ScalarConverter::checkLiteral(const std::string val)
 
 void ScalarConverter::changeChar(const std::string val)
 {
+	std::cout << "Original (char): " << val[0] << std::endl;
 	int intVal = static_cast<int>(val[0]);
-
-    if (intVal >= std::numeric_limits<int>::min() && intVal <= std::numeric_limits<int>::max()) 
-	{
-        std::cout << "Original (char): " << val[0] << std::endl;
-        std::cout << "As int: " << intVal << std::endl;
-    } 
-	else 
-		std::cout << "Integer value (" << intVal << ") is out of range for int." << std::endl;
-    float floatVal = static_cast<float>(val[0]);
-    std::cout << "As float: " << floatVal <<"f"<<std::endl;
-    double doubleVal = static_cast<double>(val[0]);
-    std::cout << "As double: " << doubleVal << std::endl;
+	std::cout << "As int: " << intVal << std::endl;
+	float floatVal = static_cast<float>(val[0]);
+	std::cout << "As float: " << std::fixed<<std::setprecision(1)<< floatVal <<"f"<<std::endl;
+	double doubleVal = static_cast<double>(val[0]);
+	std::cout << "As double: " << std::fixed<<std::setprecision(1)<<doubleVal << std::endl;
 }
 
 void	ScalarConverter::changeInt(const std::string val)
 {
 	
 	char* end;
+	
 	long valInt = strtod(val.c_str(), &end);
-	if (valInt > std::numeric_limits<int>::max() || valInt < std::numeric_limits<int>::min())
+	int	flag;
+	flag = 0;
+	if (valInt > std::numeric_limits<int>::max() || -valInt< std::numeric_limits<int>::min())
 	{
-		std::cout<<"Integer out of range"<<std::endl;
-		exit(0);
+		flag = 1;
 	}
 	std::cout<<"Char : ";
-	if (std::isprint(static_cast<unsigned char>(valInt)))
-		std::cout<<static_cast<unsigned char>(valInt)<<std::endl;
-	else
+	if (valInt > 127 || valInt < 0)
+		std::cout<<"Impossible"<<std::endl;
+	else if ((valInt < 32) || (valInt > 126 ))
 		std::cout<<"Not Printable"<<std::endl;
-	std::cout<<"Integer : "<<static_cast<int>(valInt)<<std::endl;
-	std::cout<<"Float : "<<static_cast<float>(valInt)<<"f"<<std::endl;
-	std::cout<<"Double : "<<static_cast<double>(valInt)<<std::endl;
+	else
+		std::cout<<"'"<<static_cast<unsigned char>(valInt)<<"'"<<std::endl;
+		
+	if (flag == 0)
+		std::cout<<"Integer : "<<static_cast<int>(valInt)<<std::endl;
+	else
+		std::cout<<"Integer : Out of range 2"<<std::endl;
+	std::cout<< std::fixed<<std::setprecision(1)<<"Float : "<<static_cast<float>(valInt)<<"f"<<std::endl;
+	std::cout<< std::fixed<<std::setprecision(1)<<"Double : "<<static_cast<double>(valInt)<<std::endl;
 }
 
 void ScalarConverter::changeDouble(const std::string val)
 {
 	char* end;
     double valDouble = strtod(val.c_str(), &end);
-	if (valDouble > std::numeric_limits<double>::max() || valDouble < std::numeric_limits<double>::min()) 
-    {
-		std::cout<<"Double out of range"<<std::endl;
-		exit(0);
+	int valInt = strtod(val.c_str(), &end);
+	int	flag = 0;
+	int	flag2 = 0;
+	std::cout<<valDouble<<std::endl;
+	std::cout<<std::numeric_limits<float>::min()<<std::endl;
+	if (valDouble > std::numeric_limits<int>::max() || valDouble < std::numeric_limits<int>::min())
+	{
+		flag = 1;
+	}
+	if (valDouble > std::numeric_limits<float>::max() || -valDouble > std::numeric_limits<float>::max())
+	{
+		flag2 = 1;
 	}
 	std::cout<<"Char : ";
-	if (std::isprint(static_cast<unsigned char>(valDouble)))
-		std::cout<<static_cast<unsigned char>(valDouble)<<std::endl;
-	else
+	if (valInt > 127 || valInt < 0)
+		std::cout<<"Impossible"<<std::endl;
+	else if ((valInt < 32) || (valInt > 126 ))
 		std::cout<<"Not Printable"<<std::endl;
-	std::cout<<"Integer : "<<static_cast<int>(valDouble)<<std::endl;
-	std::cout<<"Float : "<<static_cast<float>(valDouble)<<"f"<<std::endl;
-	std::cout<<"Double : "<<static_cast<double>(valDouble)<<std::endl;
+	else
+		std::cout<<"'"<<static_cast<unsigned char>(valInt)<<"'"<<std::endl;
+	if (flag == 0)
+		std::cout<<"Integer : "<<static_cast<int>(valDouble)<<std::endl;
+	else	
+		std::cout<<"Integer : Impossible 3"<<std::endl;
+	if (flag2 == 0)
+		std::cout<< std::fixed<<std::setprecision(1)<<"Float : "<<static_cast<float>(valDouble)<<"f"<<std::endl;
+	else
+		std::cout<<"Float : Impossible"<<std::endl;
+	std::cout<< std::fixed<<std::setprecision(1)<<"Double : "<<static_cast<double>(valDouble)<<std::endl;
 
 	
 }
 
 void ScalarConverter::changeFloat(const std::string val)
 {
-	std::cout<<val<<" coming soon"<<std::endl;
+	char* end;
+	char* end2;
+    double valDouble = strtod(val.c_str(), &end);
+	int	valInt = strtod(val.c_str(), &end2);
+	int	flag;
+	flag = 0;
+	std::cout<<valInt<<std::endl;
+	if (valInt == std::numeric_limits<int>::max() || valInt == std::numeric_limits<int>::min())
+	{
+		flag = 1;
+	}
+	std::cout<<"Char : ";
+	if (valInt > 127 || valInt < 0)
+		std::cout<<"Impossible"<<std::endl;
+	else if ((valInt < 32) || (valInt > 126 ))
+		std::cout<<"Not Printable"<<std::endl;
+	else
+		std::cout<<"'"<<static_cast<unsigned char>(valInt)<<"'"<<std::endl;
+	if (flag == 0)
+		std::cout<<"Integer : "<<static_cast<int>(valDouble)<<std::endl;
+	else	
+		std::cout<<"Integer : Impossible"<<std::endl;
+	std::cout<< std::fixed<<std::setprecision(1)<<"Float : "<<static_cast<float>(valDouble)<<"f"<<std::endl;
+	std::cout<< std::fixed<<std::setprecision(1)<<"Double : "<<static_cast<double>(valDouble)<<std::endl;
 }
 
 void ScalarConverter::changeLiteral(const std::string val)
