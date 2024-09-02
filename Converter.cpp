@@ -113,16 +113,7 @@ bool ScalarConverter::checkDouble(const std::string val)
 	return (true);
 }
 
-bool ScalarConverter::checkLiteral(const std::string val)
-{
-	std::string words[6] = {"-inff", "+inff", "nanf", "-inf", "+inf", "nan"};
-	for (size_t i = 0; i < 6; i++)
-	{
-		if (words[i] == val)
-			return (true);
-	}	   
-	return (false);
-}
+
 
 void ScalarConverter::changeChar(const std::string val)
 {
@@ -228,9 +219,34 @@ void ScalarConverter::changeFloat(const std::string val)
 	std::cout<< std::fixed<<std::setprecision(1)<<"Double : "<<static_cast<double>(valDouble)<<std::endl;
 }
 
+bool ScalarConverter::checkLiteral(const std::string val)
+{
+	std::string words[6] = {"-inff", "+inff", "nanf", "-inf", "+inf", "nan"};
+	for (size_t i = 0; i < 6; i++)
+	{
+		if (words[i] == val)
+			return (true);
+	}	   
+	return (false);
+}
 void ScalarConverter::changeLiteral(const std::string val)
 {
-	std::cout<<val<<" coming soon"<<std::endl;
+	std::string lastletters;
+	std::string val2;
+	val2 = val;
+	lastletters = val.substr(val.length() -3);
+	std::cout<<"Char : Impossible"<<std::endl;
+	std::cout<<"Integer : Impossible"<<std::endl;
+	if (lastletters == "nff" || lastletters == "anf")
+	{
+		std::cout<<"Float : "<<val2<<std::endl;
+		std::cout<<"Double : "<<val2.erase(val2.length()-1)<<std::endl;
+	}
+	else
+	{
+		std::cout<<"Float : "<<val2<<"f"<<std::endl;
+		std::cout<<"Double : "<<val2<<std::endl;
+	}
 }
 void	ScalarConverter::convert (std::string value)
 {
