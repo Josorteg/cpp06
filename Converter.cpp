@@ -93,7 +93,7 @@ bool ScalarConverter::checkDouble(const std::string val)
 	for (size_t i = (0 + (val[0] == '-') + (val[0] == '+'));
 			val[i]; i++)
 	{
-		if (!std::isdigit(val.c_str()[i]) and val[i] != '.' &&(val[i] != 'f'))
+		if (!std::isdigit(val.c_str()[i]) and val[i] != '.' )
 			return (false);
 		else if (val[i] == '.')
 		{
